@@ -1,7 +1,6 @@
 # QueryWalker
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](https://badge.fury.io/js/querywalker.svg)](https://badge.fury.io/js/querywalker)
 
 QueryWalker is a JavaScript library for efficiently traversing DOM elements. It provides two traversal methods: horizontal (parallel) and vertical (sequential), allowing you to process DOM elements based on selectors.
 
