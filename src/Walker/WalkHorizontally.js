@@ -26,26 +26,27 @@ export const walkHorizontally = async (
         });
     });
 
-  await Promise.all(
+  return Promise.all(
     pool.map((_) => {
       return new Promise(async (resolve, reject) => {
         try {
-          await o[_.selector]({
-            element: _.element,
-            selector: _.selector,
-            self: o,
-          }, resolve, reject);
-          resolve(_.selector);
+          resolve(
+            await o[_.selector]({
+              element: _.element,
+              selector: _.selector,
+              self: o,
+            })
+          );
         } catch (ex) {
-          o.__exeptionHandler__(ex, {
-            element: _.element,
-            selector: _.selector,
-            self: o,
-          }, resolve, reject);
-          resolve(_.selector);
+          resolve(
+            await o.__exeptionHandler__(ex, {
+              element: _.element,
+              selector: _.selector,
+              self: o,
+            })
+          );
         }
       });
     })
   );
-  return o;
-}
+};

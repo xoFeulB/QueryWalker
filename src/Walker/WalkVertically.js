@@ -4,9 +4,12 @@ export const walkVertically = async (
     _scope_: null,
     __exeptionHandler__: async (e, d) => {
       console.info("walkVertically |", e, d);
+      return d.selector;
     },
   }
 ) => {
+  let results = [];
+
   for (let selector of Object.keys(o).filter((key) => {
     return !["_scope_"].includes(key);
   })) {
@@ -17,19 +20,21 @@ export const walkVertically = async (
     ) : [];
     for (let e of elements) {
       try {
-        await o[selector]({
+        const result = await o[selector]({
           element: e,
           selector: new String(selector),
           self: o,
         });
+        results.push(result);
       } catch (ex) {
-        await o.__exeptionHandler__(ex, {
+        const errorResult = await o.__exeptionHandler__(ex, {
           element: e,
           selector: new String(selector),
           self: o,
         });
+        results.push(errorResult);
       }
     }
   }
-  return o;
+  return results;
 };
