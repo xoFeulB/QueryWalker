@@ -9,7 +9,7 @@ QueryWalker is a JavaScript library for efficiently traversing DOM elements. It 
 - **Horizontal Traversal (walkHorizontally)**: Process multiple selectors in parallel
 - **Vertical Traversal (walkVertically)**: Process selectors sequentially
 - **Async Processing**: Promise-based asynchronous processing support
-- **Error Handling**: Customizable exception handling
+- **Error Handling**: Customizable exception handling with resolve/reject control
 - **Scope Specification**: Traverse within specific DOM elements
 
 ## Installation
@@ -35,20 +35,23 @@ Process multiple selectors in parallel:
 ```javascript
 await walkHorizontally({
   _scope_: document,
-  ".button": async ({ element, selector, self }) => {
+  ".button": async ({ element, selector, self }, resolve, reject) => {
     console.log("Button found:", element);
     element.addEventListener("click", () => {
       console.log("Button clicked");
     });
+    resolve(); // Explicitly resolve when done
   },
-  ".input": async ({ element, selector, self }) => {
+  ".input": async ({ element, selector, self }, resolve, reject) => {
     console.log("Input field found:", element);
     element.addEventListener("input", (e) => {
       console.log("Input value:", e.target.value);
     });
+    resolve(); // Explicitly resolve when done
   },
-  __exeptionHandler__: async (error, data) => {
+  __exeptionHandler__: async (error, data, resolve, reject) => {
     console.error("Error occurred:", error, data);
+    resolve(data.selector); // Resolve with selector name
   },
 });
 ```
@@ -68,6 +71,9 @@ await walkVertically({
     console.log("Processing link:", element);
     // Process link elements
   },
+  __exeptionHandler__: async (error, data) => {
+    console.error("Error occurred:", error, data);
+  },
 });
 ```
 
@@ -81,7 +87,7 @@ Process DOM elements horizontally in parallel.
 
 - `options` (Object): Configuration object
   - `_scope_` (Element, default: document): Scope for traversal
-  - `__exeptionHandler__` (Function): Exception handler function
+  - `__exeptionHandler__` (Function): Exception handler function with resolve/reject parameters
   - `[selector]` (Function): Processing function with selector name as key
 
 **Returns:**
@@ -108,8 +114,19 @@ Process DOM elements vertically in sequence.
 Each selector's processing function receives the following parameters:
 
 - `element` (Element): Target DOM element for processing
-- `selector` (String): Selector name
+- `selector` (String): Selector name (String object)
 - `self` (Object): Reference to the configuration object
+- `resolve` (Function, walkHorizontally only): Promise resolve function
+- `reject` (Function, walkHorizontally only): Promise reject function
+
+### Exception Handler Parameters
+
+The exception handler function receives:
+
+- `error` (Error): The caught exception
+- `data` (Object): Object containing element, selector, and self reference
+- `resolve` (Function, walkHorizontally only): Promise resolve function
+- `reject` (Function, walkHorizontally only): Promise reject function
 
 ## Development
 
