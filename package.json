@@ -1,0 +1,33 @@
+{
+  "name": "querywalker",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xoFeulB/QueryWalker"
+  },
+  "keywords": [],
+  "author": "BlueFoxEnterprise",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xoFeulB/QueryWalker/issues"
+  },
+  "homepage": "https://github.com/xoFeulB/QueryWalker",
+  "devDependencies": {
+    "css-loader": "^6.8.1",
+    "html-loader": "^4.2.0",
+    "html-webpack-plugin": "^5.5.3",
+    "style-loader": "^3.3.3",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.15.1",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  }
+}
